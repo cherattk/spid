@@ -10,6 +10,7 @@ $loader = new Symfony\Component\ClassLoader\UniversalClassLoader();
 $loader->registerNamespaces(array(
     'Application' => APP_PATH,
     'SPID'    => LIB_PATH,
+    'Slim' => LIB_PATH . '/vendor'
     ));
 
 // activate the autoloader
