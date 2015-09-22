@@ -1,8 +1,7 @@
 <?php
 /**
- * Description
- *
- * @author karim cheratt
+ *@author karim cheratt
+ * 
  */
 namespace SPID\Plug;
 

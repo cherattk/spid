@@ -3,8 +3,7 @@
 namespace Application;
 
 class Service extends \SPID\SPID
-{   
-    protected $config;
+{
     
     protected $DataSource;
 
@@ -15,7 +14,6 @@ class Service extends \SPID\SPID
         
         $this->DataSource = parent::DataSource($config['data.source']);
         
-        //$this->configService();
         
     }
     
