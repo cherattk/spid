@@ -9,3 +9,7 @@ Systeme Requirement:
   - PHP >= 5.3.0
   - \Slim\Helper\Set.php
   - \Symfony\Component\ClassLoader\UniversalClassLoader.php
+
+
+Structure
+----------
