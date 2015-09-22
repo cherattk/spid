@@ -17,21 +17,28 @@ class Service extends \SPID\SPID
         
     }
     
-    public function serviceSingleQuery()
+    public function serviceAction()
     {
-        // sql query without param
+        /* Example with MySQL Database */
+        
+        /*************************************
+         1 - SQL Statement without parameters
+         ************************************
         $query = array(
             'query' => 'select * from `table`;'
         );
+        *************************************/
         
-        /* 1 - sql query with param
+        /*************************************
+          2 - SQL Statement with parameters
+          ************************************
         $query = array(
             'query' => 'select * from `table` where `field` = :field_value;',
             'param' => array(
                 ':field_value' => 'field_value',
             ),
         );
-        */
+        *************************************/
         
         
         $this->DataSource->connect();
@@ -40,7 +47,6 @@ class Service extends \SPID\SPID
         
         $data = $this->DataSource->getResult();
         
-        var_dump($data);
     }
     
     

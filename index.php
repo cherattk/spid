@@ -9,7 +9,10 @@ $serviceConfig = array(
     'data.source' =>array(
         'driver' => 'PDODriver',
         'config' => array(
-            'dsn' => 'pilote-dsn',
+            // required for PDODriver
+            'dsn' => 'pdo.dsn.change-me',
+            
+            //optional for some database
             'db.user' => 'user',
             'db.pass' => 'user-password'
         )
@@ -19,4 +22,4 @@ $serviceConfig = array(
 $service = new \Application\Service($serviceConfig);
 
 
-$service->serviceSingleQuery();
+$service->serviceAction();
