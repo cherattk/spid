@@ -9,7 +9,7 @@ $serviceConfig = array(
     'data.source' =>array(
         'driver' => 'PDODriver',
         'config' => array(
-            'db' => 'data-base-name',
+            'dsn' => 'pilote-dsn',
             'db.user' => 'user',
             'db.pass' => 'user-password'
         )

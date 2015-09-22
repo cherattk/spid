@@ -26,14 +26,10 @@ class PDODriver implements \SPID\DriverInterface\DataSourceInterface
     );
     
     private $setting = array(
-        "open"=>false,
-        // default value
-        "host"=>"localhost",
-        "port"=>"3306",
-        // required
-        "db"=>"",
-        "db.user"=>"",
-        "db.pass"=>"");
+        "open"=>false,        
+        "dsn"=>"",
+        "db.user"=> null,
+        "db.pass"=>null);
     
     private $query = array('query'=>null , 'param'=>null);
     
@@ -47,19 +43,25 @@ class PDODriver implements \SPID\DriverInterface\DataSourceInterface
         // Connection
         if(!$this->setting["open"]){
 
+            /*
             $DSN = 'mysql:dbname='.$this->setting['db'] .';';
             $DSN .= 'host=' . $this->setting['host'] . ';' ;
             $DSN .= 'port=' . $this->setting['port'] . ';' ;
-
+            */
+            
+            $DSN = $this->setting["dsn"];
             $DBUser = $this->setting["db.user"];
-            $DBPass = $this->setting["db.pass"];            
-
-            $this->pdo = new \PDO($DSN, $DBUser, $DBPass);           
+            $DBPass = $this->setting["db.pass"];    
+            
+            if($DBUser && $DBPass){
+                $this->pdo = new \PDO($DSN, $DBUser, $DBPass);
+            }else{
+                $this->pdo = new \PDO($DSN); 
+            }
+            
             $this->setting["open"] = true;
 
-            $this->pdo->setAttribute( 
-                    \PDO::ATTR_DEFAULT_FETCH_MODE , \PDO::FETCH_ASSOC
-                    );
+            $this->pdo->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE , \PDO::FETCH_ASSOC);
 
         }
     }
