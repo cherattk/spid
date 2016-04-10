@@ -5,66 +5,43 @@
  */
 namespace SPID;
 
-abstract class SPID
-{
-    
-    protected $plugFolder = array(
-        'data.source' => '\SPID\Plug\DataSource'
-    );
-    
-    protected $driverFolder = '\SPID\Driver\DataSource';
-
-    protected $plugContainer;
+class SPID
+{ 
+    protected $container = array();
 
     public function __construct()
     {       
-        $this->plugContainer = new \Slim\Helper\Set();
+        //$this->container = new \Slim\Helper\Set();
     }
     
-    public function DataSource($config = array())
-    {
-        return $this->plug('data.source' , $config);
+    public function getPlugInstance($config)
+    {        
+        //$plugIdentifier = serialize($config);
+        $driver = $this->getInstance($config['driver'] , $config['driver.config']);
+        
+        if(is_a($driver , '\SPID\Bridge\DriverInterface')){
+            return $this->getInstance($config['plug'], $driver);
+        }
     }
     
-    /**
-     * 
-     * @param sring $plug type of plug
-     * @param string $driver
-     * @param array $config driver configuration
-     * @return null or plug instance
-     */
-    private function plug($plug , $config)
+    public function getInstance($className , $setting = null)
     {
-        if(!isset($config['driver']) || !isset($config['config'])){
-            return;
-        }
+        $signature = serialize(func_get_args());
         
-        $driverConfig = $config['config'];
-        $driverClass = $this->driverFolder . '\\'. $config['driver'];
-
-        $plugClass= $this->plugFolder[$plug];
-        
-        $plugInstanceName = serialize($config) . $plug ;
-        
-        if($this->plugContainer->has($plugInstanceName)){
-            return $this->plugContainer[$plugInstanceName];
-        }
-
-        $driverFile = str_replace('\\', DIRECTORY_SEPARATOR, $driverClass) ;
-        $driverPath = __DIR__ . substr($driverFile,strlen(__NAMESPACE__) + 1);
-
-        if(is_file($driverPath . '.php')){
-
-            $driverInstance = new $driverClass($driverConfig);
-            $instance = new $plugClass($driverInstance);
+        if(!array_key_exists($signature , $this->container)){
             
-
-            $this->plugContainer->singleton($plugInstanceName,function()use($instance){                
-                return $instance;
-            });
-            
-            return $this->plugContainer[$plugInstanceName];
-        }
-        
+            $this->container[$signature] = null;
+            if($this->classPath($className)){            
+                $this->container[$signature] = new $className($setting);
+            }
+        }        
+        return $this->container[$signature];
+    }
+    
+    public function classPath($className)
+    {
+        $dir = str_replace('\\', DIRECTORY_SEPARATOR, $className);
+        $classFile = __DIR__ . substr($dir,strlen(__NAMESPACE__) + 1);
+        return is_file($classFile . '.php');
     }
 }

@@ -1,16 +1,20 @@
 <?php
 define("APP_PATH" , __DIR__);
-define("LIB_PATH" , __DIR__ . "/lib" );
+define("LIB_PATH" , __DIR__ . str_replace('/', \DIRECTORY_SEPARATOR, '/lib'));
+
+//loader file
+$loderPath = __DIR__ . '/vendor/Symfony/Component/ClassLoader/UniversalClassLoader.php';
+$loaderPath = str_replace('/', \DIRECTORY_SEPARATOR, $loderPath);
 
 // Class loader
-require_once(LIB_PATH . '/vendor/Symfony/Component/ClassLoader/UniversalClassLoader.php');
+require_once($loderPath);
+
 $loader = new Symfony\Component\ClassLoader\UniversalClassLoader();
 
 // register classes with namespaces
 $loader->registerNamespaces(array(
-    'Application' => APP_PATH,
-    'SPID'    => LIB_PATH,
-    'Slim' => LIB_PATH . '/vendor'
+    'Application' => __DIR__,
+    'SPID'    =>  LIB_PATH
     ));
 
 // activate the autoloader

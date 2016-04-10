@@ -1,52 +1,28 @@
 <?php
 
 namespace Application;
+use SPID\SPID as SPID;
 
-class Service extends \SPID\SPID
+class Service
 {
-    
-    protected $DataSource;
-
+    protected $dbHandler;
 
     public function __construct($config)
-    {
-        parent::__construct();
-        
-        $this->DataSource = parent::DataSource($config['data.source']);
-        
-        
+    {        
+        $spid = new SPID();
+        $this->dbHandler = $spid->getPlugInstance($config['spid']);
     }
     
     public function serviceAction()
     {
-        /* Example with MySQL Database */
-        
-        /*************************************
-         1 - SQL Statement without parameters
-         ************************************
-        $query = array(
-            'query' => 'select * from `table`;'
-        );
-        *************************************/
-        
-        /*************************************
-          2 - SQL Statement with parameters
-          ************************************
-        $query = array(
-            'query' => 'select * from `table` where `field` = :field_value;',
-            'param' => array(
-                ':field_value' => 'field_value',
-            ),
-        );
-        *************************************/
-        
-        
-        $this->DataSource->connect();
-        
-        $this->DataSource->executeQuery($query);
-        
-        $data = $this->DataSource->getResult();
-        
+        $statement = "select * from `page`;";
+        $param = "";
+        $this->dbHandler->addQuery($statement , $param);
+        $data = $this->dbHandler->execute();
+        echo '<h1>Result</h1>';
+        echo '<pre>';
+        var_dump($data);
+        echo '</pre>';
     }
     
     
