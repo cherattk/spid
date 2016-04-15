@@ -18,4 +18,5 @@ $loader->registerNamespaces(array(
     ));
 
 // activate the autoloader
+
 $loader->register();
