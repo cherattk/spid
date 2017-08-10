@@ -1,7 +1,7 @@
 Introduction:
 ------------
 SPID (Service - Plug - Interface – Driver).
-PHP Micro-Library to access data.
+PHP Micro-Library to access data. (Bridge Design Pattern)
 
 Requirement:
 ------------
