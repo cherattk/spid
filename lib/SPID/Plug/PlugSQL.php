@@ -1,8 +1,4 @@
 <?php
-/**
- *@author karim cheratt
- * 
- */
 namespace SPID\Plug;
 
 class PlugSQL extends \SPID\Bridge\PlugAbstract
@@ -37,7 +33,8 @@ class PlugSQL extends \SPID\Bridge\PlugAbstract
     }
     
     // todo : check if param count match placeholder
-    public function checkParamPlaceholder(){
+    public function checkParamPlaceholder()
+    {
         
     }
 }

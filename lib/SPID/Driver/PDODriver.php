@@ -1,9 +1,4 @@
 <?php
-/**
- *@author karim cheratt
- * 
- */
-
 namespace SPID\Driver;
 
 class PDODriver implements \SPID\Bridge\DriverInterface

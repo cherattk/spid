@@ -16,15 +16,18 @@ class Service
     public function serviceAction()
     {
         //*
-        $statement = "select * from `book` where auteur = :auteur;";
-        $param = [':auteur'=> 'balsac'];
+        $statement = "select * from `myDB`.`myTable` where fieldName = :mark;";
+        $param = [':mark'=> 'balsac'];
         $this->dbHandler->addQuery($statement , $param);
         $data = $this->dbHandler->execute();
         header('Content-Type: application/json');
-
+        
+        $this->renderJSON($data);
+    }
+    
+    public function renderJSON($data)
+    {
         echo json_encode(['result' => $data]);
-        //*/
-        //echo "<h1>i'm service</h1>";
     }
     
     

@@ -1,15 +1,4 @@
 <?php
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/**
- *
- * @author karim cheratt
- */
 namespace SPID\Bridge;
 
 abstract class PlugAbstract
@@ -29,19 +18,11 @@ abstract class PlugAbstract
         $this->driver = $driver;
     }
     
-    /******************************************
-                    * PRIVATE *
-    *******************************************/
-    
     private function queryID($query)
     {
         return md5($query);
     }
-    
-    /******************************************
-                    * PUBLIC *
-    *******************************************/
-    
+        
     public function getStatus()
     {
         return $this->driver->status();
