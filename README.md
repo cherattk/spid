@@ -1,6 +1,7 @@
 Introduction:
 ------------
-SPID (Service - Plug - Interface – Driver) est une Micro-Librairie PHP qui fournit une couche d'abstraction d'accès aux données pour les applications légères qui fournissent une API CRUD.
+SPID (Service - Plug - Interface – Driver).
+PHP Micro-Library to access data. (Adapter Design pattern)
 
 Requirement:
 ------------
