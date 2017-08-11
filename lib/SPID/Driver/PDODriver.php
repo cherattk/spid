@@ -150,8 +150,7 @@ class PDODriver implements \SPID\Bridge\DriverInterface
             }
         }
                 
-        $result['status'] = $this->status();
-        
+        $result['status'] = $this->status();        
         $this->pdo_statement->closeCursor();
         $this->pdo_statement = null;
         

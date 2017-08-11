@@ -1,7 +1,7 @@
 <?php
 namespace SPID\Plug;
 
-class PlugSQL extends \SPID\Bridge\PlugAbstract
+class PlugSQL extends \SPID\Bridge\Bridge
 {
     public function __construct($driver)
     {

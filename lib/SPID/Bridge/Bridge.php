@@ -1,7 +1,7 @@
 <?php
 namespace SPID\Bridge;
 
-abstract class PlugAbstract
+abstract class Bridge
 {    
     private $driver;
     
