@@ -10,10 +10,14 @@ Requirement:
 
 Usage Example:
 -------------
+##### 1 - Download /lib/SPID folder
+##### 2 - Register SPID path in your autoloader 
+##### 3 - Add following code to index.php
+
 ```php
 <?php
 
-require_once './anyAutoloader.php';
+require_once './anyAutoloaderThatRegisterSPID.php';
 
 $serviceConfig = array(
     'spid' =>array(
