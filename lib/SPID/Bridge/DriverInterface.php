@@ -1,5 +1,4 @@
 <?php
-
 namespace SPID\Bridge;
 
 interface DriverInterface

@@ -110,6 +110,7 @@ class PDODriver implements \SPID\Bridge\DriverInterface
     
     public function execute_query($query , $param_value = array())
     {
+        // todo : fix query requires to be end with ";"
         $tab = explode(';', strtolower($query));
         
         // 6 length of major query

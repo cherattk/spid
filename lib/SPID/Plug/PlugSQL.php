@@ -32,6 +32,11 @@ class PlugSQL extends \SPID\Bridge\Bridge
         return $this->result;
     }
     
+    public function renderJSON($data)
+    {
+        echo json_encode($data);
+    }
+    
     // todo : check if param count match placeholder
     public function checkParamPlaceholder()
     {
