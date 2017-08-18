@@ -20,21 +20,19 @@ Usage Example:
 require_once './anyAutoloaderThatRegisterSPID.php';
 
 $serviceConfig = array(
-    'spid' =>array(
-        'plug' => '\SPID\Plug\PlugSQL',
-        'driver' => '\SPID\Driver\PDODriver',
-        'driver.config' => array(
-            // required for PDODriver
-            'dsn' => 'mysql:dbname=myDB;host=localhost;port=3306;',            
-            'db.user' => 'username',
-            'db.pass' => 'pass'
-        )
+    'plug' => '\SPID\Plug\PlugSQL',
+    'driver' => '\SPID\Driver\PDODriver',
+    'driver.config' => array(
+        // required for PDODriver
+        'dsn' => 'mysql:dbname=myDB;host=localhost;port=3306;',            
+        'db.user' => 'username',
+        'db.pass' => 'pass'
     )
 );
 
 // init
 $spid = new SPID\SPID();
-$plug = $spid->getPlugInstance($serviceConfig['spid']);
+$plug = $spid->getPlugInstance($serviceConfig);
 
 $statement = "select * from `myDB`.`myTable` where myField = :mark limit 10;";
 $param = [':mark'=> '1'];
