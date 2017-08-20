@@ -10,7 +10,7 @@ interface DriverInterface
     public function close_connection();
     
     // return void
-    public function start_transaction();
+    public function init_transaction();
     
     // return void
     public function commit_transaction();
@@ -21,17 +21,32 @@ interface DriverInterface
     // return void
     //public function prepare_query($query);
     
-    // return void
+    /**
+     * 
+     * @param string $query
+     * @param string $query_param
+     * @return void
+     */
     public function execute_query($query , $query_param);
     
-    //return boolean
-    public function status();
+    /**
+     * return status message
+     * @return string status message
+     */
+    public function status_message();
     
-    /* return mixed data */
-    public function result();
+    /**
+     * Get driver code based on http-status-code
+     * @return integer http-status-code
+     */
+    public function status_code();
     
-    /* return string error message */
-    public function error_message();
+    
+    /**
+     * @return mixed query data-result
+     */
+    public function get_result();
+    
     
     
 }

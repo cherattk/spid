@@ -21,7 +21,7 @@ abstract class Bridge
     
     private function startTransation()
     {
-        $this->driver->start_transaction();
+        $this->driver->init_transaction();
     }
     
     private function commitTransaction()
@@ -34,16 +34,37 @@ abstract class Bridge
         $this->driver->cancel_transaction();
     }
         
-    public function getStatus()
+    public function getStatusMessage()
     {
-        return $this->driver->status();
+        return $this->driver->status_message();
     }
     
-    public function errorMessage()
+    public function getStatusCode()
     {
-        return $this->driver->error_message();
+        return $this->driver->status_code();
+    }
+    
+    protected function isError()
+    {
+        return (500 === $this->driver->status_code());
     }
         
+    public function getQueries()
+    {
+        return $this->queriesTable;
+    }
+    
+    public function executeQuery($query , $param)
+    {        
+        $this->driver->execute_query($query , $param);
+    }    
+    
+    public function getResult()
+    {
+        return $this->driver->get_result();
+    }    
+    
+    
     protected function executeTransaction()
     {
         $this->openConnection();
@@ -53,35 +74,43 @@ abstract class Bridge
         $commit = true;        
         foreach ($this->queriesTable as $query => $params) {
             
-            $this->runQuery($query , $params);
-            
-            if($this->isError()){                
+            $commit = $this->runQuery($query , $params);
+            if(!$commit){
                 $this->cancelTransaction();
-                $commit = false;
                 break;
             }
-        }        
-        if($commit){
-            $this->commitTransaction();
         }
+        
+        if($commit){ $this->commitTransaction(); }
         
         $this->resetQueries();
     }
     
     public function runQuery($query , array $params)
-    {
-        if($params){
-            foreach($params as $param){                
-                $this->driver->execute_query($query , $param);
-                $this->result[] = $this->driver->result();
+    {        
+        
+        if(!empty($params)){
+            
+            $commit = true;            
+            foreach($params as $param)
+            {
+                $this->executeQuery($query , $param);
+                $this->result[] = $this->getResult();
 
-                if($this->isError()){ break;}
+                $error = $this->isError();
+                if($error){
+                    $commit = false;
+                    break;
+                }
             }
         }
         else{            
-            $this->driver->execute_query($query);
-            $this->result[] = $this->driver->result();
+            $this->executeQuery($query);
+            $this->result[] = $this->getResult();
+            $commit = !$this->isError();
         }
+        
+        return $commit;
     }
     
     protected function resetQueries()
@@ -95,18 +124,6 @@ abstract class Bridge
             $this->queriesTable[$query] = [];            
         }
         $this->queriesTable[$query][] = $params;        
-    }
-    
-    public function getQueries()
-    {
-        return $this->queriesTable;
-    }
-    
-    
-    protected function isError()
-    {
-        return ( 500 === $this->driver->status() );
-    }
-    
+    }    
     
 }

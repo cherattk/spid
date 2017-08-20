@@ -14,14 +14,15 @@ class PDODriver implements \SPID\Bridge\DriverInterface
     
     private $query_type = '';
     
-    private $status_code = array(
+    private $status_code = [
         'OK' => 200, 
         'CREATED' => 201,
         'DELETED' => 204,
         'ERROR' => 500,
         'BAD_REQUEST' => 400,
         'NOT_FOUND' => 404,
-        'NOT_MODIFIED' => 304);
+        'NOT_MODIFIED' => 304
+    ];
     
     
     private $setting = array(
@@ -68,7 +69,7 @@ class PDODriver implements \SPID\Bridge\DriverInterface
         //$this->pdo_statement = null;
     }
     
-    public function start_transaction()
+    public function init_transaction()
     {
         $this->pdo->beginTransaction();
     }
@@ -83,31 +84,15 @@ class PDODriver implements \SPID\Bridge\DriverInterface
         $this->pdo->rollBack();
     }
     
-    public function error_message()
+    public function status_message()
     {        
-        return $this->error;        
+        return $this->status_text;       
     }
     
-    public function status()
+    public function status_code()
     {
         return $this->status_code[$this->status_text];
     }
-    
-//    public function prepare_query($query)
-//    {                 
-//        $tab = explode(';', strtolower($query));
-//        
-//        // 6 length of major query
-//        $this->query_type = substr($tab[count($tab)-2] , 0 , 6);
-//            
-//        if(in_array($this->query_type ,array('select' ,'insert' , 'update' , 'delete'))){
-//            $this->pdo_statement = $this->pdo->prepare($query);
-//            $this->status_text = 'OK';
-//            
-//        }else{
-//            $this->status_text = 'BAD_REQUEST';
-//        }
-//    }
     
     public function execute_query($query , $param_value = array())
     {
@@ -125,7 +110,12 @@ class PDODriver implements \SPID\Bridge\DriverInterface
         
     }
     
-    public function result()
+    
+    /**
+     * 
+     * @return array ['status' => integer , 'data' => array]
+     */
+    public function get_result()
     {
         //$this->status_text = ($this->error[0] !== "00000") ? 'ERROR' : 'OK';
         $result = ['status' => 500 , 'data' => null];
@@ -152,7 +142,7 @@ class PDODriver implements \SPID\Bridge\DriverInterface
             }
         }
                 
-        $result['status'] = $this->status();        
+        $result['status'] = $this->status_code();
         $this->pdo_statement->closeCursor();
         $this->pdo_statement = null;
         
