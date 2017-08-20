@@ -37,7 +37,7 @@ $plug = $spid->getPlugInstance($serviceConfig);
 $query_a = "select * from `myDB`.`tab_one` where `myField` = :mark limit 10;";
 $param_a = [':mark'=> 'not-found-value'];
 
-$plug->addQuery($statement_a , $param_a);
+$plug->addQuery($query_a , $param_a);
 
 // sql required to be end with ";"
 $plug->addQuery("select * from `myDB`.`tab_two` limit 10;");
