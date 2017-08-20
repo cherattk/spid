@@ -34,12 +34,32 @@ $serviceConfig = array(
 $spid = new SPID\SPID();
 $plug = $spid->getPlugInstance($serviceConfig);
 
-$statement = "select * from `myDB`.`myTable` where myField = :mark limit 10;";
-$param = [':mark'=> '1'];
+$query_a = "select * from `myDB`.`tab_one` where `myField` = :mark limit 10;";
+$param_a = [':mark'=> 'not-found-value'];
 
-$plug->addQuery($statement , $param);
+$plug->addQuery($statement_a , $param_a);
+
+// sql required to be end with ";"
+$plug->addQuery("select * from `myDB`.`tab_two` limit 10;");
+
 $data = $plug->execute();
 
 header('Content-Type: application/json');
-$plug->renderJSON($data[0]);
+$plug->renderJSON($data);
+
+/* output array
+    [
+       {
+            "status":404,
+            "data":[]
+       },
+       {
+           "status":200,
+           "data":[
+                   {"table_field":"value",...}
+                ]
+       }            
+   ]
+*/
+
 ```
