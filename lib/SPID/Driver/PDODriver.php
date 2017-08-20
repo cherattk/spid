@@ -40,29 +40,30 @@ class PDODriver implements \SPID\Bridge\DriverInterface
     public function open_connection()
     {    
         // Connection
-        if(!$this->setting["open"]){
-            
-            $DSN = $this->setting["dsn"];
-            $DBUser = $this->setting["db.user"];
-            $DBPass = $this->setting["db.pass"];
-            
+        if($this->pdo instanceof \PDO){            
+            return;
+        }
+        
+        $DSN = $this->setting["dsn"];
+        $DBUser = $this->setting["db.user"];
+        $DBPass = $this->setting["db.pass"];            
+
+        try{
             if($DBUser){
                 $this->pdo = new \PDO($DSN, $DBUser, $DBPass);
             }else{
                 $this->pdo = new \PDO($DSN); 
             }
-            
-            $this->setting["open"] = true;
-
-            $this->pdo->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE , \PDO::FETCH_ASSOC);
-
+        }catch(\PDOException $e){
+            exit("DataBase : " . $e->getMessage());
         }
+        $this->pdo->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE , \PDO::FETCH_ASSOC);
     }
     
     public function close_connection()
     {
         $this->pdo = null;
-        $this->setting["open"] = false;
+        //$this->setting["open"] = false;
         //$this->pdo_statement->closeCursor();
         //$this->pdo_statement = null;
     }

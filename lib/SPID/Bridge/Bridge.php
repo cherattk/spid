@@ -7,20 +7,31 @@ abstract class Bridge
     
     protected $queriesTable = [];
     
-    // $queriesParam = [string $query][mixed $value]
-    protected $queriesParam = [];
-    
-    // $queriesParam = ['status'=> int Code , 'data' => mixed]
-    protected $result = array();
+    protected $result = [];
 
     public function __construct(\SPID\Bridge\DriverInterface $driver)
     {
         $this->driver = $driver;
     }
     
-    private function queryID($query)
+    private function openConnection()
     {
-        return md5($query);
+        $this->driver->open_connection();
+    }
+    
+    private function startTransation()
+    {
+        $this->driver->start_transaction();
+    }
+    
+    private function commitTransaction()
+    {
+        $this->driver->commit_transaction();
+    }
+    
+    private function cancelTransaction()
+    {
+        $this->driver->cancel_transaction();
     }
         
     public function getStatus()
@@ -32,63 +43,63 @@ abstract class Bridge
     {
         return $this->driver->error_message();
     }
-    
+        
     protected function executeTransaction()
     {
-        $this->result = null;
-        $this->driver->open_connection();        
-        $this->driver->start_transaction();
+        $this->openConnection();
+        $this->startTransation();        
         
-        $commit = true;
-        // sort queriesTable asc
-        foreach ($this->queriesTable as $query) {
+        $this->result = null; 
+        $commit = true;        
+        foreach ($this->queriesTable as $query => $params) {
             
-            $this->runQuery($query);
+            $this->runQuery($query , $params);
             
             if($this->isError()){                
-                $this->driver->cancel_transaction();
+                $this->cancelTransaction();
                 $commit = false;
                 break;
             }
         }        
         if($commit){
-            $this->driver->commit_transaction();
+            $this->commitTransaction();
         }
         
         $this->resetQueries();
     }
     
-    private function runQuery($query)
+    public function runQuery($query , array $params)
     {
-        if(empty($this->queriesParam[$query])){
-            $this->driver->execute_query($query);
-            $this->result[] = $this->driver->result();
-        }
-        else{
-            foreach($this->queriesParam[$query] as $param){
-                
+        if($params){
+            foreach($params as $param){                
                 $this->driver->execute_query($query , $param);
                 $this->result[] = $this->driver->result();
-                        
+
                 if($this->isError()){ break;}
             }
+        }
+        else{            
+            $this->driver->execute_query($query);
+            $this->result[] = $this->driver->result();
         }
     }
     
     protected function resetQueries()
     {
         $this->queriesTable = [];
-        $this->queriesParam = [];
     }
     
-    protected function setQuery($query , $param = null)
+    protected function setQueries($query , array $params = [])
     {
-        if(!in_array($query , $this->queriesTable)){
-            $this->queriesTable[] = $query;
+        if(!isset($this->queriesTable[$query])){
+            $this->queriesTable[$query] = [];            
         }
-        if($param){
-           $this->queriesParam[$query][] = $param;
-        }
+        $this->queriesTable[$query][] = $params;        
+    }
+    
+    public function getQueries()
+    {
+        return $this->queriesTable;
     }
     
     

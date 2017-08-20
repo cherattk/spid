@@ -5,14 +5,10 @@ class SPID
 { 
     protected $container = array();
 
-    public function __construct()
-    {       
-        //$this->container = new \Slim\Helper\Set();
-    }
+    public function __construct(){}
     
     public function getPlugInstance($config)
-    {        
-        //$plugIdentifier = serialize($config);
+    {
         $driver = $this->getInstance($config['driver'] , $config['driver.config']);
         
         if(is_a($driver , '\SPID\Bridge\DriverInterface')){

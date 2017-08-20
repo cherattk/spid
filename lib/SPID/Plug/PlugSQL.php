@@ -15,9 +15,9 @@ class PlugSQL extends \SPID\Bridge\Bridge
         //return md5(trim($query));
     }
     
-    public function addQuery($queryStatement , $queryParam = null)
+    public function addQuery($queryStatement , array $queryParam = [])
     {
-        $this->setQuery($this->cleanQuery($queryStatement) , $queryParam);
+        $this->setQueries($this->cleanQuery($queryStatement) , $queryParam);
     }
     
     public function execute()

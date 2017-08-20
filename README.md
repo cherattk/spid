@@ -5,7 +5,7 @@ PHP Micro-Library to access data. (Bridge Design Pattern)
 
 Requirement:
 ------------
-  - PHP >= 5.3.0
+  - PHP >= 5.4
   - Any Autoloader
 
 Usage Example:
