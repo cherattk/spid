@@ -6,6 +6,7 @@ PHP Micro-Library to access data. (Bridge Design Pattern)
 Requirement:
 ------------
   - PHP >= 5.4
+  - Pdo extension must be enabled
   - Any Autoloader
 
 Usage Example:
